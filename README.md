@@ -99,9 +99,14 @@ Restart the client if it is not listed in AddOns; use `/reload` after updates.
 
 ### Upgrading from MacroMate
 
-Existing installs can keep the `MacroMate` folder: the compatibility manifest
-loads RankReady and preserves character preferences. Use `/rr` or `/rankready`
-instead of the old commands. Existing spell macros are reused without changes.
-Do not enable separate copies in both folders.
+Close WoW and replace the old `MacroMate` folder with `RankReady`. Use `/rr`
+or `/rankready` instead of the old commands. Existing spell macros are reused
+without changes. Do not keep separate copies in both folders.
+
+To carry over character preferences, copy each character's
+`SavedVariables/MacroMate.lua` to `SavedVariables/RankReady.lua` under your
+client's `WTF/Account` directory while WoW is closed. RankReady imports the old
+settings automatically when that file is loaded. Otherwise, preferences start
+with their defaults.
 
 The screenshots were taken before the rename and still show the old window title.
