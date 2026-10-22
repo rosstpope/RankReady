@@ -17,7 +17,11 @@ edits, or deletes them. Creation and dragging are unavailable in combat.
 Rank-free macros already use your highest learned rank, so they do not need
 replacing when you learn an upgrade. Keep separate macros for deliberate downranking.
 
-![MacroMate beside the spellbook](docs/screenshots/MacroMate%20companion.png)
+### Companion window
+
+![Spellbook with MacroMate docked on the right, showing spell checkboxes, Create and Ready buttons, free macro slots, and display settings](docs/screenshots/MacroMate%20companion.png)
+
+*Choose spells, create missing macros, and adjust action-bar labels from the companion window.*
 
 ## Controls
 
@@ -44,7 +48,11 @@ Supported spell macros also show costs, including the resolved spell for
 conditional macros. These are upfront costs reported by the game, not total
 ongoing or channelled costs.
 
-![Action bar showing resource costs and lower-rank spell highlights](docs/screenshots/Spell%20cost%20and%20downranks.png)
+### Action-bar costs and ranks
+
+![Action buttons with blue mana, red rage, and yellow energy costs at the bottom, plus R1 and R2 labels on lower-rank spells](docs/screenshots/Spell%20cost%20and%20downranks.png)
+
+*Resource costs sit below spell icons; lower-rank labels appear at the top-left so both remain readable.*
 
 ## Lower-rank spell highlights
 
@@ -78,7 +86,11 @@ with no polling loop.
 Passive spells, pet abilities, professions, General-tab abilities, unlearned
 spells, and inactive specializations are excluded from the companion's spell list.
 
-![Spell macros created by MacroMate](docs/screenshots/Created%20macros.png)
+### A created macro
+
+![Character macro window with a Thorns macro selected, showing #showtooltip Thorns and /cast Thorns without a fixed rank](docs/screenshots/Created%20macros.png)
+
+*Created macros use the spell's icon and omit a fixed rank, so they continue to cast your highest learned rank.*
 
 ## Installation
 
