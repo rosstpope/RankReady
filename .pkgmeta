@@ -1,0 +1,5 @@
+package-as: RankReady
+
+ignore:
+  - docs
+  - README.md
