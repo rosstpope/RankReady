@@ -1,12 +1,12 @@
-﻿# MacroMate
+# MacroMate
 
 A spellbook companion for **WoW Forever (Interface 16001)** that helps you:
 
 - Create spell macros that always cast your highest learned rank.
-- Spot lower-rank spells on your action bars.
 - See mana, rage, and energy costs on action buttons.
+- Spot lower-rank spells on your action bars.
 
-## Quick start
+## Spellbook companion
 
 1. Open your spellbook, or type `/mm` to toggle MacroMate independently.
 2. Click **Create** beside a spell, or check the spells you want and click **Create included**.
@@ -16,6 +16,10 @@ Macros are created only when you ask. MacroMate never automatically creates,
 edits, or deletes them. Creation and dragging are unavailable in combat.
 Rank-free macros already use your highest learned rank, so they do not need
 replacing when you learn an upgrade. Keep separate macros for deliberate downranking.
+
+<!-- Add the screenshot, then uncomment the image below.
+![MacroMate beside the spellbook](docs/screenshots/spellbook.png)
+-->
 
 ## Controls
 
@@ -32,20 +36,37 @@ replacing when you learn an upgrade. Keep separate macros for deliberate downran
 Preferences are saved per character. The companion normally opens and closes
 with the spellbook; `/mm` also works as a standalone window.
 
-## Action-bar labels
-
-With the spellbook open, lower-rank spells get an orange border and a rank label
-such as **R2**. Hover to compare that rank with your highest learned rank.
-Enable the text-only option above to keep rank labels visible at all times.
-Highest-rank spells remain unmarked; macro buttons are skipped for rank highlighting.
+## Mana, rage, and energy costs
 
 Resource costs appear at the bottom of spell buttons: **blue** for mana, **red**
-for rage, and **yellow** for energy. Supported spell macros also show costs,
-including the resolved spell for conditional macros. These are upfront costs
-reported by the game, not total ongoing or channelled costs.
+for rage, and **yellow** for energy. Toggle each resource with the **Mana**,
+**Rage**, and **Energy** checkboxes at the bottom of `/mm`.
 
-Both features support Blizzard action bars; third-party bars outside Blizzard's
-button registry are not covered. Updates are event-driven, with no polling loop.
+Supported spell macros also show costs, including the resolved spell for
+conditional macros. These are upfront costs reported by the game, not total
+ongoing or channelled costs.
+
+<!-- Add the screenshot, then uncomment the image below.
+![Action bar showing mana, rage, and energy costs](docs/screenshots/resource-costs.png)
+-->
+
+## Lower-rank spell highlights
+
+With the spellbook open, spells below your highest learned rank get an orange
+border and a rank label such as **R2**. Hover to compare the ranks.
+
+Enable **Always show lower ranks (text only)** in `/mm` to keep labels visible
+with the spellbook closed, without orange borders. Highest-rank spells remain
+unmarked; macro buttons are skipped for rank highlighting. Deliberately
+downranked spells are highlighted too; replacing them is your choice.
+
+<!-- Add the screenshot, then uncomment the image below.
+![Action bar highlighting lower-rank spells](docs/screenshots/lower-rank-highlights.png)
+-->
+
+Cost labels and rank highlights support Blizzard action bars; third-party bars
+outside Blizzard's button registry are not covered. Updates are event-driven,
+with no polling loop.
 
 ## Macro handling
 
