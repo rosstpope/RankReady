@@ -17,9 +17,7 @@ edits, or deletes them. Creation and dragging are unavailable in combat.
 Rank-free macros already use your highest learned rank, so they do not need
 replacing when you learn an upgrade. Keep separate macros for deliberate downranking.
 
-<!-- Add the screenshot, then uncomment the image below.
-![MacroMate beside the spellbook](docs/screenshots/spellbook.png)
--->
+![MacroMate beside the spellbook](docs/screenshots/MacroMate%20companion.png)
 
 ## Controls
 
@@ -46,9 +44,7 @@ Supported spell macros also show costs, including the resolved spell for
 conditional macros. These are upfront costs reported by the game, not total
 ongoing or channelled costs.
 
-<!-- Add the screenshot, then uncomment the image below.
-![Action bar showing mana, rage, and energy costs](docs/screenshots/resource-costs.png)
--->
+![Action bar showing resource costs and lower-rank spell highlights](docs/screenshots/Spell%20cost%20and%20downranks.png)
 
 ## Lower-rank spell highlights
 
@@ -60,9 +56,8 @@ with the spellbook closed, without orange borders. Highest-rank spells remain
 unmarked; macro buttons are skipped for rank highlighting. Deliberately
 downranked spells are highlighted too; replacing them is your choice.
 
-<!-- Add the screenshot, then uncomment the image below.
-![Action bar highlighting lower-rank spells](docs/screenshots/lower-rank-highlights.png)
--->
+The [action-bar screenshot above](docs/screenshots/Spell%20cost%20and%20downranks.png)
+shows cost labels alongside lower-rank spell highlights.
 
 Cost labels and rank highlights support Blizzard action bars; third-party bars
 outside Blizzard's button registry are not covered. Updates are event-driven,
@@ -82,6 +77,8 @@ with no polling loop.
 
 Passive spells, pet abilities, professions, General-tab abilities, unlearned
 spells, and inactive specializations are excluded from the companion's spell list.
+
+![Spell macros created by MacroMate](docs/screenshots/Created%20macros.png)
 
 ## Installation
 
