@@ -1,0 +1,11 @@
+## Interface: 16001
+## Title: MacroMate
+## Notes: Spellbook companion with manual highest-rank macros and new-rank reminders.
+## Author: Tim
+## Version: 1.6.0
+## SavedVariablesPerCharacter: MacroMateDB
+
+MacroMate.lua
+Highlights.lua
+ManaCosts.lua
+Window.lua
