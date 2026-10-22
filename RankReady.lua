@@ -5,7 +5,7 @@ local loggedIn, scheduled = false, false
 local review = {}
 
 local function Say(message)
-    print("|cffffd100MacroMate:|r " .. message)
+    print("|cffffd100RankReady:|r " .. message)
 end
 
 local function Limits()
@@ -15,7 +15,7 @@ local function Limits()
 end
 
 local function Body(name)
-    return "#showtooltip " .. name .. "\n/cast " .. name .. "\n# MacroMate"
+    return "#showtooltip " .. name .. "\n/cast " .. name .. "\n# RankReady"
 end
 
 local function Spells()
@@ -124,12 +124,12 @@ local function ShowReview()
     local text = #names == 1 and ("Learned a new spell or rank: " .. names[1] .. ".")
         or ("Learned " .. #names .. " new spells or ranks.")
     text = text .. "\n\nExisting rank-free macros already use your highest rank. Review your macros?"
-    local popup = StaticPopup_FindVisible("MACROMATE_REVIEW")
+    local popup = StaticPopup_FindVisible("RANKREADY_REVIEW")
     if popup then popup:GetTextFontString():SetText(text)
-    else StaticPopup_Show("MACROMATE_REVIEW", text) end
+    else StaticPopup_Show("RANKREADY_REVIEW", text) end
 end
 
-StaticPopupDialogs.MACROMATE_REVIEW = {
+StaticPopupDialogs.RANKREADY_REVIEW = {
     text = "%s", button1 = "Review", button2 = "Later",
     OnAccept = function()
         review = {}
@@ -243,8 +243,12 @@ function addon.SyncNow() addon.CreateMacros() end
 
 frame:SetScript("OnEvent", function(_, event)
     if event == "PLAYER_LOGIN" then
-        if type(MacroMateDB) ~= "table" then MacroMateDB = {} end
-        settings = MacroMateDB
+        -- Preserve preferences when upgrading in the original addon folder.
+        if type(RankReadyDB) ~= "table" then
+            RankReadyDB = type(MacroMateDB) == "table" and MacroMateDB or {}
+        end
+        MacroMateDB = nil
+        settings = RankReadyDB
         settings.automatic = nil -- Retire the old automatic-creation preference.
         if type(settings.excluded) ~= "table" then settings.excluded = {} end
         if type(settings.accountFallback) ~= "boolean" then settings.accountFallback = true end
@@ -270,9 +274,9 @@ for _, event in ipairs({"PLAYER_LOGIN", "SPELLS_CHANGED", "LEARNED_SPELL_IN_SKIL
     frame:RegisterEvent(event)
 end
 
-SLASH_MACROMATE1 = "/macromate"
-SLASH_MACROMATE2 = "/mm"
-SlashCmdList.MACROMATE = function(message)
+SLASH_RANKREADY1 = "/rankready"
+SLASH_RANKREADY2 = "/rr"
+SlashCmdList.RANKREADY = function(message)
     local command = message:lower():match("^%s*(.-)%s*$")
     if not loggedIn then return end
     if command == "" then addon.ToggleWindow()
@@ -282,5 +286,5 @@ SlashCmdList.MACROMATE = function(message)
         local ready = 0
         for _, row in ipairs(rows) do if row.ready then ready = ready + 1 end end
         Say(string.format("%d/%d spells have macros. %s", ready, #rows, slots))
-    else Say("/mm: companion; /mm create: create missing included macros; /mm status: report only.") end
+    else Say("/rr: companion; /rr create: create missing included macros; /rr status: report only.") end
 end

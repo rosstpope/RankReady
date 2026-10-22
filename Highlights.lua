@@ -70,7 +70,7 @@ local function Buttons()
             button:HookScript("OnEnter", function(self)
                 local overlay = overlays[self]
                 if active and overlay and overlay.rank and GameTooltip:GetOwner() == self then
-                    GameTooltip:AddLine(string.format("MacroMate: rank %d on bar; rank %d learned.",
+                    GameTooltip:AddLine(string.format("RankReady: rank %d on bar; rank %d learned.",
                         overlay.rank, overlay.latest), 1, 0.6, 0.15, true)
                     GameTooltip:Show()
                 end

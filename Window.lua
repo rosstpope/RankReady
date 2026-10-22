@@ -93,7 +93,7 @@ function addon.RefreshWindow()
 end
 
 local function BuildWindow()
-    local panel = CreateFrame("Frame", "MacroMateWindow", UIParent, "BackdropTemplate")
+    local panel = CreateFrame("Frame", "RankReadyWindow", UIParent, "BackdropTemplate")
     panel:Hide()
     panel:SetSize(330, 506)
     panel:SetPoint("CENTER")
@@ -108,7 +108,7 @@ local function BuildWindow()
         edgeFile = "Interface/Tooltips/UI-Tooltip-Border", edgeSize = 14,
         insets = {left = 3, right = 3, top = 3, bottom = 3}})
     panel:SetBackdropColor(0.045, 0.045, 0.055, 0.98)
-    Label(panel, "GameFontNormalLarge", 16, -15, "MacroMate")
+    Label(panel, "GameFontNormalLarge", 16, -15, "RankReady")
     Label(panel, "GameFontDisableSmall", 16, -36, "Highest-rank macros. Manual creation.")
     local close = CreateFrame("Button", nil, panel, "UIPanelCloseButton")
     close:SetPoint("TOPRIGHT", -2, -2)
@@ -183,7 +183,7 @@ local function BuildWindow()
         function(value) addon.SetPreference("showLowerRanks", value) end)
     panel:SetScript("OnShow", addon.RefreshWindow)
     panel:SetScript("OnHide", function() GameTooltip:Hide() end)
-    UISpecialFrames[#UISpecialFrames + 1] = "MacroMateWindow"
+    UISpecialFrames[#UISpecialFrames + 1] = "RankReadyWindow"
     window = panel
 end
 

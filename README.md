@@ -1,4 +1,4 @@
-# MacroMate
+# RankReady
 
 A spellbook companion for **WoW Forever (Interface 16001)** that helps you:
 
@@ -8,18 +8,18 @@ A spellbook companion for **WoW Forever (Interface 16001)** that helps you:
 
 ## Spellbook companion
 
-1. Open your spellbook, or type `/mm` to toggle MacroMate independently.
+1. Open your spellbook, or type `/rr` to toggle RankReady independently.
 2. Click **Create** beside a spell, or check the spells you want and click **Create included**.
 3. Click or drag a ready spell icon, then place its macro on your action bar.
 
-Macros are created only when you ask. MacroMate never automatically creates,
+Macros are created only when you ask. RankReady never automatically creates,
 edits, or deletes them. Creation and dragging are unavailable in combat.
 Rank-free macros already use your highest learned rank, so they do not need
 replacing when you learn an upgrade. Keep separate macros for deliberate downranking.
 
 ### Companion window
 
-![Spellbook with MacroMate docked on the right, showing spell checkboxes, Create and Ready buttons, free macro slots, and display settings](docs/screenshots/MacroMate%20companion.png)
+![Spellbook with RankReady docked on the right, showing spell checkboxes, Create and Ready buttons, free macro slots, and display settings](docs/screenshots/RankReady%20companion.png)
 
 *Choose spells, create missing macros, and adjust action-bar labels from the companion window.*
 
@@ -27,22 +27,22 @@ replacing when you learn an upgrade. Keep separate macros for deliberate downran
 
 | Control | What it does |
 | --- | --- |
-| `/mm` or `/macromate` | Toggle the companion window. |
-| `/mm create` | Create missing macros for included spells. |
-| `/mm sync` | Alias for `/mm create`. |
-| `/mm status` | Show spell counts and free macro slots. |
+| `/rr` or `/rankready` | Toggle the companion window. |
+| `/rr create` | Create missing macros for included spells. |
+| `/rr sync` | Alias for `/rr create`. |
+| `/rr status` | Show spell counts and free macro slots. |
 | **Always show lower ranks (text only)** | Keep lower-rank labels visible with the spellbook closed, without orange borders. Off by default. |
 | **Mana**, **Rage**, **Energy** | Toggle action-button cost labels independently. All on by default. |
 | **Use account slots when needed** | Allow new macros to use account slots when character slots are full. |
 
 Preferences are saved per character. The companion normally opens and closes
-with the spellbook; `/mm` also works as a standalone window.
+with the spellbook; `/rr` also works as a standalone window.
 
 ## Mana, rage, and energy costs
 
 Resource costs appear at the bottom of spell buttons: **blue** for mana, **red**
 for rage, and **yellow** for energy. Toggle each resource with the **Mana**,
-**Rage**, and **Energy** checkboxes at the bottom of `/mm`.
+**Rage**, and **Energy** checkboxes at the bottom of `/rr`.
 
 Supported spell macros also show costs, including the resolved spell for
 conditional macros. These are upfront costs reported by the game, not total
@@ -59,7 +59,7 @@ ongoing or channelled costs.
 With the spellbook open, spells below your highest learned rank get an orange
 border and a rank label such as **R2**. Hover to compare the ranks.
 
-Enable **Always show lower ranks (text only)** in `/mm` to keep labels visible
+Enable **Always show lower ranks (text only)** in `/rr` to keep labels visible
 with the spellbook closed, without orange borders. Highest-rank spells remain
 unmarked; macro buttons are skipped for rank highlighting. Deliberately
 downranked spells are highlighted too; replacing them is your choice.
@@ -94,5 +94,14 @@ spells, and inactive specializations are excluded from the companion's spell lis
 
 ## Installation
 
-Place the `MacroMate` folder in your client's `Interface/AddOns` directory.
+Place the `RankReady` folder in your client's `Interface/AddOns` directory.
 Restart the client if it is not listed in AddOns; use `/reload` after updates.
+
+### Upgrading from MacroMate
+
+Existing installs can keep the `MacroMate` folder: the compatibility manifest
+loads RankReady and preserves character preferences. Use `/rr` or `/rankready`
+instead of the old commands. Existing spell macros are reused without changes.
+Do not enable separate copies in both folders.
+
+The screenshots were taken before the rename and still show the old window title.

@@ -1,11 +1,12 @@
 ## Interface: 16001
-## Title: MacroMate
+## Title: RankReady
 ## Notes: Spellbook companion with manual highest-rank macros and new-rank reminders.
 ## Author: Tim
-## Version: 1.6.0
-## SavedVariablesPerCharacter: MacroMateDB
+## Version: 1.7.0
+## SavedVariablesPerCharacter: RankReadyDB, MacroMateDB
+## X-Compatibility: Loads RankReady from an existing MacroMate folder.
 
-MacroMate.lua
+RankReady.lua
 Highlights.lua
 ManaCosts.lua
 Window.lua
