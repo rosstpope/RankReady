@@ -68,6 +68,10 @@ function addon.RefreshWindow()
     window.rage:SetChecked(settings.showRageCosts)
     window.energy:SetChecked(settings.showEnergyCosts)
     window.lowerRanks:SetChecked(settings.showLowerRanks)
+    local modes = {all = "All spells", selected = "Selected spells", off = "Off"}
+    window.costMode:SetText("Costs: " .. modes[settings.costMode])
+    window.costMode:SetEnabled(not InCombatLockdown())
+    window.chooseCosts:SetEnabled(not InCombatLockdown())
     window.slots:SetText(slots)
     window.state:SetText(InCombatLockdown() and "Leave combat to create or drag macros."
         or "Create only when you choose. Drag ready icons onto your bars.")
@@ -95,7 +99,7 @@ end
 local function BuildWindow()
     local panel = CreateFrame("Frame", "RankReadyWindow", UIParent, "BackdropTemplate")
     panel:Hide()
-    panel:SetSize(330, 506)
+    panel:SetSize(330, 568)
     panel:SetPoint("CENTER")
     panel:SetFrameStrata("DIALOG")
     panel:SetClampedToScreen(true)
@@ -181,6 +185,13 @@ local function BuildWindow()
         function(value) addon.SetPreference("showEnergyCosts", value) end)
     panel.lowerRanks = Check(panel, "Always show lower ranks (text only)", 12, -474,
         function(value) addon.SetPreference("showLowerRanks", value) end)
+    panel.costMode = Button(panel, "Costs: All spells", 145, 16, -506, function()
+        local settings = addon.GetCostSettings()
+        local nextMode = {all = "selected", selected = "off", off = "all"}
+        addon.SetCostMode(nextMode[settings.costMode])
+    end)
+    panel.chooseCosts = Button(panel, "Choose cost labels", 145, 169, -506, addon.ToggleCostSelection)
+    Label(panel, "GameFontDisableSmall", 16, -540, "Choose labels directly on your action bars.")
     panel:SetScript("OnShow", addon.RefreshWindow)
     panel:SetScript("OnHide", function() GameTooltip:Hide() end)
     UISpecialFrames[#UISpecialFrames + 1] = "RankReadyWindow"

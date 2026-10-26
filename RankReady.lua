@@ -38,7 +38,17 @@ local function Spells()
                     end
                     local entry = spells[name]
                     if not entry then entry = {}; spells[name] = entry end
-                    entry.icon = info.iconID or entry.icon
+                    -- Icon fields differ between client versions. Prefer the
+                    -- spellbook texture API when item info omits its icon.
+                    local icon = info.iconID
+                    if not icon and C_SpellBook.GetSpellBookItemTexture then
+                        icon = C_SpellBook.GetSpellBookItemTexture(slot, bank)
+                    end
+                    local spellID = info.spellID or info.actionID
+                    if not icon and spellID and C_Spell and C_Spell.GetSpellTexture then
+                        icon = C_Spell.GetSpellTexture(spellID)
+                    end
+                    entry.icon = icon or entry.icon
                     local rank = type(subName) == "string" and tonumber(subName:match("%d+"))
                     if rank and rank >= (entry.highestRank or 0) then
                         entry.highestRank = rank
@@ -226,6 +236,19 @@ function addon.SetPreference(key, value)
     end
 end
 
+function addon.GetCostSettings()
+    return settings
+end
+
+function addon.SetCostMode(mode)
+    if not settings or InCombatLockdown() then return end
+    if mode ~= "all" and mode ~= "selected" and mode ~= "off" then return end
+    settings.costMode = mode
+    addon.ConfigureManaCosts(settings.showManaCosts, settings.showRageCosts, settings.showEnergyCosts)
+    if addon.QueueCostSelection then addon.QueueCostSelection() end
+    Refresh()
+end
+
 function addon.SetSpellEnabled(spell, enabled)
     if not settings then return end
     settings.excluded[spell] = not enabled or nil
@@ -256,6 +279,8 @@ frame:SetScript("OnEvent", function(_, event)
         if type(settings.showRageCosts) ~= "boolean" then settings.showRageCosts = true end
         if type(settings.showEnergyCosts) ~= "boolean" then settings.showEnergyCosts = true end
         if type(settings.showLowerRanks) ~= "boolean" then settings.showLowerRanks = false end
+        if settings.costMode ~= "selected" and settings.costMode ~= "off" then settings.costMode = "all" end
+        if type(settings.costSpells) ~= "table" then settings.costSpells = {} end
         loggedIn = true
         if addon.ConfigureRankLabels then addon.ConfigureRankLabels(settings.showLowerRanks) end
         if addon.ConfigureManaCosts then
@@ -281,10 +306,11 @@ SlashCmdList.RANKREADY = function(message)
     if not loggedIn then return end
     if command == "" then addon.ToggleWindow()
     elseif command == "sync" or command == "create" then addon.CreateMacros()
+    elseif command == "costs" then addon.ToggleCostSelection()
     elseif command == "status" then
         local rows, _, slots = addon.GetWindowData()
         local ready = 0
         for _, row in ipairs(rows) do if row.ready then ready = ready + 1 end end
         Say(string.format("%d/%d spells have macros. %s", ready, #rows, slots))
-    else Say("/rr: companion; /rr create: create missing included macros; /rr status: report only.") end
+    else Say("/rr: companion; /rr create: create missing included macros; /rr status: report only; /rr costs: choose cost labels.") end
 end

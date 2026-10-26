@@ -66,6 +66,10 @@ local function Buttons()
             button:HookScript("OnShow", function()
                 Queue()
                 if addon.QueueManaCosts then addon.QueueManaCosts() end
+                if addon.QueueCostSelection then addon.QueueCostSelection() end
+            end)
+            button:HookScript("OnHide", function()
+                if addon.QueueCostSelection then addon.QueueCostSelection() end
             end)
             button:HookScript("OnEnter", function(self)
                 local overlay = overlays[self]

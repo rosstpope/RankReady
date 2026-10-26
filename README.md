@@ -32,6 +32,18 @@ Stop replacing spells on your bars every time you learn a new rank. RankReady cr
 
 See resource costs at the bottom of your action buttons: **blue** for mana, **red** for rage, and **yellow** for energy. Each resource has its own checkbox in `/rr`, and all three start enabled.
 
+### Choose which spells show costs
+
+Use **Costs: All spells / Selected spells / Off** in the companion to control how many labels appear. Your current resource filters still apply.
+
+1. Click **Choose cost labels**, or type `/rr costs`, outside combat.
+2. Click the temporary checkboxes over your action-bar spells to show or hide their costs. Checked spells keep their normal cost labels as a preview.
+3. Use **All** to show every supported spell, **None** to start an empty selection, and **Done** or **Escape** to finish. Changes save immediately per character.
+
+Selections follow the spell across ranks and bar positions, independently of macro creation. Conditional macros use their currently resolved spell. When you first deselect a spell from **All**, the remaining supported spells on your visible bars become your selection; newly added spells then start unselected.
+
+Selection mode closes when combat starts. Outside selection mode, your action buttons work normally. If you select a spell whose resource filter is off, enable that resource to see its cost.
+
 Supported spell macros also show costs, including the resolved spell for conditional macros. Labels show the upfront cost reported by the game, rather than total ongoing or channelled costs.
 
 ### Action-bar costs and spell ranks
@@ -54,6 +66,7 @@ Highest-rank spells remain unmarked. Deliberately downranked spells are highligh
 - `/rr create`: create missing macros for included spells.
 - `/rr sync`: alias for `/rr create`.
 - `/rr status`: show spell counts and free macro slots.
+- `/rr costs`: toggle action-bar cost selection mode.
 
 The window normally opens and closes with the spellbook; `/rr` also works independently. Preferences are saved per character.
 
@@ -67,7 +80,7 @@ The window normally opens and closes with the spellbook; `/rr` also works indepe
 
 ## Compatibility and installation
 
-Built for **WoW Forever (Interface 16001)**. Cost labels and rank highlights support Blizzard action bars; third-party bars outside Blizzard's button registry are not covered. Updates are event-driven, with no polling loop.
+Built for **WoW Forever (Interface 16001)**, with compatibility fallbacks for **TBC Anniversary (Interfaces 20505/20506)**. Cost labels and rank highlights support Blizzard action bars; third-party bars outside Blizzard's button registry are not covered. Updates are event-driven, with no polling loop.
 
 The companion's spell list excludes passives, pet abilities, professions, General-tab abilities, unlearned spells, and inactive specializations.
 

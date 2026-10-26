@@ -61,46 +61,58 @@ local function Label(button)
     return label
 end
 
+function addon.ResolveCostSpell(button, cache)
+    local action = button.action
+    if not Number(action) or action <= 0 then return end
+    local kind, id, subtype = GetActionInfo(action)
+    if not Readable(kind) or not Number(id) then return end
+    if kind == "spell" or (kind == "macro" and Readable(subtype) and subtype == "spell") then
+        return id
+    elseif kind == "macro" then
+        if cache.macros[id] == nil then
+            local spell = addon.GetSimpleMacroSpell(id)
+            local spellID
+            if spell then
+                cache.known = cache.known or addon.GetKnownRanks()
+                local entry = cache.known[spell]
+                spellID = entry and entry.highestSpellID
+            end
+            spellID = spellID or GetMacroSpell(id)
+            cache.macros[id] = Number(spellID) and spellID or false
+        end
+        return cache.macros[id] or nil
+    end
+end
+
+function addon.GetCostSpellName(spellID)
+    if not Number(spellID) or spellID <= 0 then return end
+    local name = C_Spell.GetSpellName(spellID)
+    if Readable(name) and type(name) == "string" and name ~= "" then return name end
+end
+
+function addon.ShouldShowCost(spellID)
+    local settings = addon.GetCostSettings()
+    if not settings or settings.costMode == "off" then return false end
+    if settings.costMode == "all" then return true end
+    local name = addon.GetCostSpellName(spellID)
+    return name ~= nil and settings.costSpells[name] == true
+end
+
 Refresh = function()
     -- Reuse labels and cache costs only for this refresh, so buffs and rank
     -- changes cannot leave a persistent price cache stale.
     for _, label in pairs(labels) do label:Hide() end
-    local costs, macroSpells, known = {}, {}, nil
+    local costs, cache = {}, {macros = {}}
     for _, button in ipairs(addon.GetActionButtons()) do
-        local action = button.action
-        if button:IsVisible() and Number(action) and action > 0 then
-            local kind, id, subtype = GetActionInfo(action)
-            if Readable(kind) and Number(id) then
-                local spellID
-                if kind == "spell" then spellID = id
-                elseif kind == "macro" and Readable(subtype) and subtype == "spell" then
-                    -- Forever resolves spell macros here: id is the spell ID,
-                    -- not a macro index. Passing it to GetMacroInfo/GetMacroSpell
-                    -- drops the cost for every such macro.
-                    spellID = id
-                elseif kind == "macro" then
-                    if macroSpells[id] == nil then
-                        local spell = addon.GetSimpleMacroSpell(id)
-                        if spell then
-                            known = known or addon.GetKnownRanks()
-                            local entry = known[spell]
-                            spellID = entry and entry.highestSpellID
-                        end
-                        -- For conditional macros the client resolves the currently
-                        -- selected spell; do not try to interpret macro conditions.
-                        spellID = spellID or GetMacroSpell(id)
-                        macroSpells[id] = Number(spellID) and spellID or false
-                    end
-                    spellID = macroSpells[id]
-                end
-                if Number(spellID) and spellID > 0 then
-                    if costs[spellID] == nil then costs[spellID] = ResourceCost(spellID) or false end
-                    local cost = costs[spellID]
-                    if cost ~= false then
-                        local label = Label(button)
-                        label:SetText(tostring(cost))
-                        label:Show()
-                    end
+        if button:IsVisible() then
+            local spellID = addon.ResolveCostSpell(button, cache)
+            if Number(spellID) and spellID > 0 and addon.ShouldShowCost(spellID) then
+                if costs[spellID] == nil then costs[spellID] = ResourceCost(spellID) or false end
+                local cost = costs[spellID]
+                if cost ~= false then
+                    local label = Label(button)
+                    label:SetText(tostring(cost))
+                    label:Show()
                 end
             end
         end
@@ -125,7 +137,8 @@ function addon.ConfigureManaCosts(mana, rage, energy)
     if mana then resources[Enum.PowerType.Mana] = "|cff8cccff" end
     if rage then resources[Enum.PowerType.Rage] = "|cffff6666" end
     if energy then resources[Enum.PowerType.Energy] = "|cffffdb55" end
-    enabled = next(resources) ~= nil
+    local settings = addon.GetCostSettings()
+    enabled = next(resources) ~= nil and settings and settings.costMode ~= "off"
     watcher:UnregisterAllEvents()
     if enabled then
         for _, event in ipairs({"PLAYER_ENTERING_WORLD", "ACTIONBAR_SLOT_CHANGED", "ACTIONBAR_PAGE_CHANGED",
