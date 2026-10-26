@@ -2,7 +2,7 @@
 ## Title: RankReady
 ## Notes: Spellbook companion with manual highest-rank macros and new-rank reminders.
 ## Author: Tim
-## Version: 1.8.0
+## Version: 1.8.1
 ## SavedVariablesPerCharacter: RankReadyDB, MacroMateDB
 
 RankReady.lua

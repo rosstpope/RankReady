@@ -141,7 +141,7 @@ local function BuildWindow()
         row.icon:SetSize(28, 28)
         row.icon:SetPoint("TOPLEFT", 24, -3)
         row.icon.texture = row.icon:CreateTexture(nil, "ARTWORK")
-        row.icon.texture:SetAllPoints()
+        row.icon.texture:SetAllPoints(row.icon)
         row.icon:RegisterForDrag("LeftButton")
         row.icon:SetScript("OnDragStart", function()
             if row.spell then addon.PickupSpell(row.spell) end

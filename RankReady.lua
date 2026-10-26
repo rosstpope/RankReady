@@ -20,20 +20,45 @@ end
 
 local function Spells()
     local spells, counts = {}, {}
-    local bank = Enum.SpellBookSpellBank.Player
-    for lineIndex = 1, C_SpellBook.GetNumSpellBookSkillLines() do
-        local line = C_SpellBook.GetSpellBookSkillLineInfo(lineIndex)
+    local modern = C_SpellBook and C_SpellBook.GetNumSpellBookSkillLines
+        and C_SpellBook.GetSpellBookSkillLineInfo and C_SpellBook.GetSpellBookItemInfo
+        and C_SpellBook.GetSpellBookItemName and Enum.SpellBookSpellBank
+    local bank = modern and Enum.SpellBookSpellBank.Player or (BOOKTYPE_SPELL or "spell")
+    local lineCount = modern and C_SpellBook.GetNumSpellBookSkillLines() or GetNumSpellTabs()
+    for lineIndex = 1, lineCount do
+        local line
+        if modern then
+            line = C_SpellBook.GetSpellBookSkillLineInfo(lineIndex)
+        else
+            local _, _, offset, count, _, offSpecID = GetSpellTabInfo(lineIndex)
+            if offset and count then
+                line = {itemIndexOffset = offset, numSpellBookItems = count, offSpecID = offSpecID}
+            end
+        end
         -- General contains racial abilities and professions, rather than class spells.
         if line and lineIndex > 1 and not line.shouldHide
             and (not line.offSpecID or line.offSpecID == 0) then
             for slot = line.itemIndexOffset + 1, line.itemIndexOffset + line.numSpellBookItems do
-                local info = C_SpellBook.GetSpellBookItemInfo(slot, bank)
-                if info and info.itemType == Enum.SpellBookItemType.Spell
-                    and not info.isPassive and not info.isOffSpec and info.name ~= "" then
+                local info
+                if modern then
+                    info = C_SpellBook.GetSpellBookItemInfo(slot, bank)
+                else
+                    local kind, id = GetSpellBookItemInfo(slot, bank)
+                    if kind == "SPELL" then
+                        local name, subName = GetSpellBookItemName(slot, bank)
+                        info = {name = name, subName = subName, spellID = id,
+                            isPassive = IsPassiveSpell(slot, bank)}
+                    end
+                end
+                if info and (not modern or info.itemType == Enum.SpellBookItemType.Spell)
+                    and not info.isPassive and not info.isOffSpec
+                    and type(info.name) == "string" and info.name ~= "" then
                     local name = info.name
                     local subName = info.subName
                     if not subName or subName == "" then
-                        local _, sub = C_SpellBook.GetSpellBookItemName(slot, bank)
+                        local _, sub
+                        if modern then _, sub = C_SpellBook.GetSpellBookItemName(slot, bank)
+                        else _, sub = GetSpellBookItemName(slot, bank) end
                         subName = sub
                     end
                     local entry = spells[name]
@@ -41,9 +66,14 @@ local function Spells()
                     -- Icon fields differ between client versions. Prefer the
                     -- spellbook texture API when item info omits its icon.
                     local icon = info.iconID
-                    if not icon and C_SpellBook.GetSpellBookItemTexture then
+                    if icon == 0 or icon == "" then icon = nil end
+                    if not icon and modern and C_SpellBook.GetSpellBookItemTexture then
                         icon = C_SpellBook.GetSpellBookItemTexture(slot, bank)
                     end
+                    if not icon and not modern and GetSpellBookItemTexture then
+                        icon = GetSpellBookItemTexture(slot, bank)
+                    end
+                    if icon == 0 or icon == "" then icon = nil end
                     local spellID = info.spellID or info.actionID
                     if not icon and spellID and C_Spell and C_Spell.GetSpellTexture then
                         icon = C_Spell.GetSpellTexture(spellID)
